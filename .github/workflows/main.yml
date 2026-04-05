@@ -1,0 +1,64 @@
+name: Date Curator MVP CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  test:
+    name: Run Pytest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest httpx
+
+      - name: Run Tests
+        run: pytest tests/
+
+  build-and-push:
+    name: Build Docker Image and Push
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        # GitHub Secrets에 DOCKERHUB_USERNAME, DOCKERHUB_TOKEN 이 등록되어 있어야 작동합니다.
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/suwon-date-curator:latest
+
+  deploy:
+    name: Deploy to Self-hosted Runner
+    needs: build-and-push
+    # 사용자 로컬 PC나 개인 가상 서버에 Settings > Actions > Runners 가 켜져 있어야 합니다.
+    runs-on: self-hosted
+    steps:
+      - name: Deploy new container
+        run: |
+          # 최신 버전의 이미지를 도커 허브에서 당겨온 뒤 재시작합니다.
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/suwon-date-curator:latest
+          docker-compose down
+          docker-compose up -d
