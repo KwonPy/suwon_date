@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 import sys
 import os
 
@@ -23,3 +25,10 @@ app.include_router(recommendation.router, prefix="/api/v1/recommendations", tags
 @app.get("/health")
 def health_check():
     return {"status": "ok", "message": "Suwon Date Curator FastAPI is happily running!"}
+
+# 프론트엔드 UI를 백엔드와 연동하여 하나의 서버에서 서빙 (All-in-One)
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
+
+@app.get("/")
+def serve_index():
+    return FileResponse("frontend/index.html")

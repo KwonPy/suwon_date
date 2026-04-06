@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수원 데이트 큐레이터</title>
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="background-art"></div>
+    <div class="glass-container">
+        
+        <!-- 랜딩 뷰 -->
+        <section id="view-landing" class="view active">
+            <!-- 수원화성 SVG 아트워크 -->
+            <div style="margin-bottom: 25px; animation: fadeInUp 1s ease-out;">
+                <svg width="220" height="110" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0,100 L0,70 L15,70 L15,60 L25,60 L25,70 L40,70 L40,60 L50,60 L50,70 L65,70 L65,60 L75,60 L75,70 L90,70 L90,60 L100,60 L100,70 L110,60 L110,70 L125,70 L125,60 L135,60 L135,70 L150,70 L150,60 L160,60 L160,70 L175,70 L175,60 L185,60 L185,70 L200,70 L200,100 Z" fill="#D48166" opacity="0.65"/>
+                    <path d="M75,100 L75,80 C75,65 125,65 125,80 L125,100" fill="#FDFCF0"/> 
+                    <path d="M82,60 L82,45 L118,45 L118,60 Z" fill="#2A3A59" opacity="0.75"/>
+                    <path d="M85,45 L85,40 L115,40 L115,45 Z" fill="#2A3A59" opacity="0.9"/>
+                    <path d="M72,40 Q100,15 128,40 Z" fill="#2A3A59" opacity="0.85"/> 
+                </svg>
+            </div>
+            <h1 class="serif-title">전통의 낭만부터 도심의 트렌드까지,<br>수원의 모든 순간을 잇다</h1>
+            <p class="subtitle">AI가 분석하는 당신만의 완벽한 수원 데이트 코스</p>
+            <button class="primary-btn" onclick="nextView('view-region')">코스 추천받기 시작해볼까요?</button>
+        </section>
+
+        <!-- 권역 선택 뷰 -->
+        <section id="view-region" class="view">
+            <h2 class="serif-title">Step 0. 지역 선택<br>어느 지역에서 시간 보내실 건가요?</h2>
+            <div class="card-group" id="region-group">
+                <button class="card-btn" data-value="행궁동">행궁동 (화성행궁)</button>
+                <button class="card-btn" data-value="광교">광교 (호수공원)</button>
+                <button class="card-btn" data-value="수원역">수원역 / 로데오</button>
+                <button class="card-btn" data-value="스타필드">스타필드 수원</button>
+            </div>
+            <button class="primary-btn" onclick="nextView('view-purpose')">다음 단계로 이동</button>
+        </section>
+
+        <!-- Step 1 목적 선택 -->
+        <section id="view-purpose" class="view">
+            <h2 class="serif-title">Step 1. 관계 및 목적<br>오늘 데이트의 주 목적은 무엇인가요?</h2>
+            <p class="hint-text">(다중 선택 가능)</p>
+            <div class="pill-group">
+                <button class="pill-btn" data-value="첫데이트"># 첫데이트</button>
+                <button class="pill-btn" data-value="소개팅"># 소개팅</button>
+                <button class="pill-btn" data-value="썸남썸녀"># 썸남썸녀</button>
+                <button class="pill-btn" data-value="오래된연인"># 오래된연인</button>
+                <button class="pill-btn" data-value="기념일"># 기념일</button>
+                <button class="pill-btn" data-value="조용히대화하기좋은"># 대화하기 좋은</button>
+            </div>
+            <button class="primary-btn" onclick="nextView('view-vibe')">다음 단계로 이동</button>
+        </section>
+
+        <!-- Step 2 분위기 선택 -->
+        <section id="view-vibe" class="view">
+            <h2 class="serif-title">Step 2. 분위기<br>어떤 무드의 공간을 원하시나요?</h2>
+            <p class="hint-text">(다중 선택 가능)</p>
+            <div class="pill-group">
+                <button class="pill-btn" data-value="로맨틱한"># 로맨틱한</button>
+                <button class="pill-btn" data-value="힙한"># 힙한/트렌디</button>
+                <button class="pill-btn" data-value="조용한"># 조용한</button>
+                <button class="pill-btn" data-value="인스타감성"># 인스타 감성</button>
+                <button class="pill-btn" data-value="모던한"># 모던한</button>
+                <button class="pill-btn" data-value="루프탑"># 탁 트인 루프탑</button>
+            </div>
+            <button class="primary-btn" onclick="nextView('view-activity')">다음 단계로 이동</button>
+        </section>
+
+        <!-- Step 3 액티비티 -->
+        <section id="view-activity" class="view">
+            <h2 class="serif-title">Step 3. 로맨틱 체험<br>식사 외에 경험하고 싶은 활동이 있나요?</h2>
+            <p class="hint-text">(다중 선택 가능 - 없으면 패스)</p>
+            <div class="pill-group">
+                <button class="pill-btn" data-value="산책하기좋은"># 산책하기 좋은 🌿</button>
+                <button class="pill-btn" data-value="사진맛집"># 예쁜 사진 남기기📸</button>
+                <button class="pill-btn" data-value="야경명소"># 낭만적인 야경 🌃</button>
+                <button class="pill-btn" data-value="쇼핑하기좋은"># 아기자기 쇼핑 구경</button>
+                <button class="pill-btn" data-value="전시/관람"># 문화 전시 관람</button>
+                <button class="pill-btn" data-value="방탈출/보드게임"># 재밌는 실내 액티비티</button>
+            </div>
+            <button class="primary-btn" onclick="nextView('view-convenience')">다음 단계로 이동</button>
+        </section>
+
+        <!-- Step 4 편의성 -->
+        <section id="view-convenience" class="view">
+            <h2 class="serif-title">Step 4. 필수 편의성<br>꼭 챙겨야 할 편의 사항이 있나요?</h2>
+            <p class="hint-text">(없으시면 바로 넘어가셔도 좋습니다)</p>
+            <div class="pill-group">
+                <button class="pill-btn" data-value="주차가능"># 주차가 편안한 🚗</button>
+                <button class="pill-btn" data-value="뚜벅이추천"># 뚜벅이 완벽동선</button>
+                <button class="pill-btn" data-value="가성비좋은"># 학생 커플 / 가성비 💰</button>
+                <button class="pill-btn" data-value="화장실깨끗한"># 깨끗한 화장실 필수</button>
+                <button class="pill-btn" data-value="웨이팅있는"># 웨이팅 불사! 무조건 맛집</button>
+            </div>
+            <button class="primary-btn" onclick="nextView('view-food')">다음 단계로 이동</button>
+        </section>
+
+        <!-- Step 5 음식 테마 -->
+        <section id="view-food" class="view">
+            <h2 class="serif-title">Step 5. 식음료 취향<br>식사는 어떤 테마가 끌리시나요?</h2>
+            <p class="hint-text">(가장 선호하시는 키워드를 담아주세요)</p>
+            <div class="pill-group">
+                <button class="pill-btn" data-value="커피맛집"># 커피에 진심 ☕</button>
+                <button class="pill-btn" data-value="디저트맛집"># 식후 달달 디저트 🍰</button>
+                <button class="pill-btn" data-value="양식/파스타"># 분위기있는 양식 🍝</button>
+                <button class="pill-btn" data-value="일식/초밥"># 정갈하게 입호강 일식 🍣</button>
+                <button class="pill-btn" data-value="한식/백반"># 한국인은 든든한 밥심 한식 🍲</button>
+                <button class="pill-btn" data-value="가볍게한잔"># 낭만적인 칵테일/와인바 🥂</button>
+            </div>
+            <button class="primary-btn" onclick="nextView('view-special')">이제 거의 다 왔어요!</button>
+        </section>
+
+        <!-- 특이사항 뷰 -->
+        <section id="view-special" class="view">
+            <h2 class="serif-title">마지막으로,<br>특별한 제한/요구사항이 있나요?</h2>
+            <textarea id="special-request" rows="5" placeholder="예: 여자친구가 예쁘지만 걷기 힘든 구두를 싣었어요. 동선이 짧은 코스로 짜주세요! 비건 메뉴가 되는 곳이 한 군데는 무조건 있어야 해요!"></textarea>
+            <button class="primary-btn" onclick="submitCuration()">AI 큐레이터 코스 스케줄 받기!</button>
+        </section>
+
+        <!-- 로딩 뷰 -->
+        <section id="view-loading" class="view">
+            <div class="loader"></div>
+            <h2 class="serif-title">수원의 핫플들을 분석하여<br>당신만의 코스로 잇는 중...</h2>
+            <p class="subtitle">AI가 5단계의 조건을 완벽하게 스캔하고 조립하고 있습니다.</p>
+        </section>
+
+        <!-- 결과 뷰 -->
+        <section id="view-result" class="view">
+            <div class="result-layout">
+                <div class="result-story">
+                    <h2 class="serif-title mb-4">당신을 위한 완벽한 데이트, 큐레이팅 완료!</h2>
+                    <div id="llm-text" class="llm-story">로딩중...</div>
+                </div>
+            </div>
+            <button class="primary-btn mt-6" onclick="location.reload()">처음부터 다시 매칭하기</button>
+        </section>
+
+    </div>
+    <script src="/static/app.js"></script>
+</body>
+</html>

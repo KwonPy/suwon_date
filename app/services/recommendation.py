@@ -5,6 +5,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 from models.place import Place
+from dotenv import load_dotenv
+
+# .env 파일에서 환경변수를 불러옵니다.
+load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 if GEMINI_API_KEY:
@@ -76,7 +80,7 @@ def get_hybrid_recommendation(db: Session, region: str, user_tags: list, special
     """
     
     try:
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-3-flash-preview')
         response = model.generate_content(prompt)
         llm_text = response.text
     except Exception as e:
