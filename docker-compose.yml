@@ -6,9 +6,12 @@ services:
     container_name: suwon_date_api
     ports:
       - "8000:8000"
+    env_file:
+      - .env
     environment:
       - DATABASE_URL=sqlite:///./suwon_date.db
       - TZ=Asia/Seoul
     volumes:
       - .:/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+

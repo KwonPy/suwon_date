@@ -54,14 +54,42 @@ def get_hybrid_recommendation(db: Session, region: str, user_tags: list, special
     # 상위 10개 예비 후보군 추출
     top_10 = place_scores[:10]
     
-    # 3. LLM Reranking (Gemini 1.5 Flash)
-    if not GEMINI_API_KEY or not special_request:
+    # 3. 분기: 특이사항 유무에 따른 응답 전략
+    # Track B: 특이사항이 없는 경우 → LLM 없이 키워드 매칭 Top 3 카드 반환
+    if not special_request or special_request.strip() == "":
+        top_3 = place_scores[:3]
         return {
             "status": "success",
-            "message": "Gemini API 키가 설정되지 않았거나 특이사항이 없어 베이스 유사도 결과를 반환합니다.",
-            "candidates": [{"name": p.name, "category": p.category, "tags": p.theme_keywords, "score": round(score, 2)} for p, score in top_10[:3]]
+            "mode": "keyword_only",
+            "message": "키워드 분석 기반으로 가장 잘 어울리는 장소 3곳을 추천합니다!",
+            "candidates": [
+                {
+                    "name": p.name,
+                    "category": p.category,
+                    "tags": p.theme_keywords,
+                    "score": round(score, 2)
+                } for p, score in top_3
+            ]
         }
-        
+
+    # Track A: 특이사항이 있는 경우 → LLM(Gemini)이 스토리텔링 코스 생성
+    if not GEMINI_API_KEY:
+        # API 키가 없으면 키워드 결과라도 반환
+        top_3 = place_scores[:3]
+        return {
+            "status": "success",
+            "mode": "keyword_only",
+            "message": "Gemini API 키가 설정되지 않아, 키워드 기반 추천 결과를 반환합니다.",
+            "candidates": [
+                {
+                    "name": p.name,
+                    "category": p.category,
+                    "tags": p.theme_keywords,
+                    "score": round(score, 2)
+                } for p, score in top_3
+            ]
+        }
+
     # 상위 10개 정보를 프롬프트로 쓸 수 있게 포맷팅
     candidates_info = "\n".join([f"- {p.name} [{p.category}] (특징: {p.theme_keywords})" for p, score in top_10])
     
@@ -88,6 +116,8 @@ def get_hybrid_recommendation(db: Session, region: str, user_tags: list, special
         
     return {
         "status": "success",
+        "mode": "full_course",
         "llm_recommendation": llm_text,
         "base_candidates": [{"name": p.name, "category": p.category, "score": round(score, 2)} for p, score in top_10]
     }
+

@@ -119,7 +119,13 @@
         <section id="view-special" class="view">
             <h2 class="serif-title">마지막으로,<br>특별한 제한/요구사항이 있나요?</h2>
             <textarea id="special-request" rows="5" placeholder="예: 여자친구가 예쁘지만 걷기 힘든 구두를 싣었어요. 동선이 짧은 코스로 짜주세요! 비건 메뉴가 되는 곳이 한 군데는 무조건 있어야 해요!"></textarea>
-            <button class="primary-btn" onclick="submitCuration()">AI 큐레이터 코스 스케줄 받기!</button>
+            <button class="primary-btn" onclick="submitCuration()">🤖 AI가 특이사항까지 반영한 코스 받기</button>
+            <button onclick="document.getElementById('special-request').value=''; submitCuration();"
+                style="margin-top:14px; display:block; width:100%; padding:14px; background:rgba(255,220,100,0.18); border:2px solid rgba(255,220,100,0.7); border-radius:12px; color:#FFE066; font-size:1rem; font-weight:600; cursor:pointer; transition:all 0.2s; letter-spacing:0.02em;"
+                onmouseover="this.style.background='rgba(255,220,100,0.32)'"
+                onmouseout="this.style.background='rgba(255,220,100,0.18)'">
+                ⚡ 특이사항 없이 키워드 기반으로 바로 추천받기
+            </button>
         </section>
 
         <!-- 로딩 뷰 -->
@@ -130,14 +136,10 @@
         </section>
 
         <!-- 결과 뷰 -->
-        <section id="view-result" class="view">
-            <div class="result-layout">
-                <div class="result-story">
-                    <h2 class="serif-title mb-4">당신을 위한 완벽한 데이트, 큐레이팅 완료!</h2>
-                    <div id="llm-text" class="llm-story">로딩중...</div>
-                </div>
-            </div>
-            <button class="primary-btn mt-6" onclick="location.reload()">처음부터 다시 매칭하기</button>
+        <section id="view-result" class="view" style="overflow-y:auto; max-height:90vh; padding-bottom:30px;">
+            <h2 class="serif-title" style="margin-bottom:20px;">당신을 위한 완벽한 데이트, 큐레이팅 완료! 🎉</h2>
+            <div id="llm-text" style="width:100%; text-align:left; line-height:1.8;">로딩중...</div>
+            <button class="primary-btn" style="margin-top:28px;" onclick="location.reload()">처음부터 다시 매칭하기</button>
         </section>
 
     </div>

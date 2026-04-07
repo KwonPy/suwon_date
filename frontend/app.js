@@ -63,13 +63,31 @@ async function submitCuration() {
         
         const data = await response.json();
         
-        // 결과 출력 포맷팅
-        let finalText = data.llm_recommendation || data.message || "추천 결과를 불러오지 못했습니다.";
-        
-        // FastAPI 서버 터짐 에러일 경우
-        if (data.detail) finalText = "오류: " + data.detail;
+        // 결과 출력 포맷팅 (모드 분기)
+        let finalHTML = "";
 
-        document.getElementById('llm-text').innerText = finalText;
+        if (data.mode === "keyword_only" && data.candidates) {
+            // Track B: 키워드 기반 카드 결과
+            finalHTML = `<p style="margin-bottom:20px; opacity:0.85;">${data.message}</p>`;
+            data.candidates.forEach((place, i) => {
+                finalHTML += `
+                <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:18px 22px; margin-bottom:14px; backdrop-filter:blur(8px);">
+                    <h3 style="margin:0 0 6px; font-size:1.15rem;">📍 ${i+1}. ${place.name}</h3>
+                    <p style="margin:4px 0; opacity:0.7; font-size:0.9rem;">카테고리: ${place.category}</p>
+                    <p style="margin:4px 0; opacity:0.7; font-size:0.9rem;">키워드: ${place.tags || "없음"}</p>
+                    <p style="margin:4px 0; opacity:0.55; font-size:0.8rem;">매칭 점수: ${(place.score * 100).toFixed(0)}%</p>
+                </div>`;
+            });
+        } else if (data.llm_recommendation) {
+            // Track A: LLM 스토리텔링 결과
+            finalHTML = data.llm_recommendation;
+        } else if (data.detail) {
+            finalHTML = "오류: " + data.detail;
+        } else {
+            finalHTML = data.message || "추천 결과를 불러오지 못했습니다.";
+        }
+
+        document.getElementById('llm-text').innerHTML = finalHTML;
         nextView('view-result');
         
     } catch (error) {
@@ -78,3 +96,4 @@ async function submitCuration() {
         nextView('view-result');
     }
 }
+

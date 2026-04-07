@@ -5,6 +5,7 @@ class CandidateItem(BaseModel):
     name: str
     category: str
     score: float
+    tags: Optional[str] = None
 
 class RecommendationRequest(BaseModel):
     region: Optional[str] = None
@@ -13,8 +14,10 @@ class RecommendationRequest(BaseModel):
 
 class RecommendationResponse(BaseModel):
     status: Optional[str] = None
+    mode: Optional[str] = None
     llm_recommendation: Optional[str] = None
     message: Optional[str] = None
     candidates: Optional[List[CandidateItem]] = None
     base_candidates: Optional[List[CandidateItem]] = None
     error: Optional[str] = None
+
